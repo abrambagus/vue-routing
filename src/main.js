@@ -29,17 +29,32 @@ const router = createRouter({
         },
       ],
     },
-    { path: '/users', components: { default: UsersList, footer: UsersFooter } },
+    {
+      path: '/users',
+      components: { default: UsersList, footer: UsersFooter },
+      beforeEnter(to, from, next) {
+        console.log(to, from);
+        next();
+      },
+    },
     { path: '/:notFound(.*)', component: NotFound },
   ],
   linkActiveClass: 'active',
-  scrollBehavior(to, from, savedPostition) {
-    console.log(to, from, savedPostition);
+  scrollBehavior(_, _2, savedPostition) {
     if (savedPostition) {
       return savedPostition;
     }
     return { left: 0, top: 0 };
   },
+});
+
+router.beforeEach(function (to, from, next) {
+  console.log(to, from);
+  next();
+});
+
+router.afterEach(function (to, from) {
+  console.log(to, from);
 });
 
 const app = createApp(App);
